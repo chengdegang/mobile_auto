@@ -2,6 +2,9 @@ import time
 from appium import webdriver
 import unittest
 
+"""
+测试前保证已开启apium server并确保手机已连接（三星s8）
+"""
 class Test(unittest.TestCase):
     #每次方法之前执行
     def setUp(self):
@@ -15,7 +18,7 @@ class Test(unittest.TestCase):
             'noReset': True
         }
         self.driver = webdriver.Remote('http://127.0.0.1:4723/wd/hub', desired_caps)
-        time.sleep(2)
+        time.sleep(3)
         # isAppInstalled = self.driver.is_app_installed('com.ezxr.unitySDKDemo')
         # print(isAppInstalled)
         # if not isAppInstalled:
@@ -61,7 +64,41 @@ class Test(unittest.TestCase):
         el3 = self.driver.find_element_by_xpath(
             "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.widget.LinearLayout[1]/android.widget.TextView")
         el3.click()
+        time.sleep(1)
+        self.driver.get_screenshot_as_file('images/test_3.png')
+
+    #验证删除本地指定资源，并验证下载成功
+    def test_4(self):
+        el1 = self.driver.find_element_by_id("com.ezxr.unitySDKDemo:id/arToolboxRL")
+        el1.click()
+        time.sleep(1)
+        el2 = self.driver.find_element_by_id("com.ezxr.unitySDKDemo:id/rl_fun_test")
+        el2.click()
+        time.sleep(1)
+        el3 = self.driver.find_element_by_id("com.ezxr.unitySDKDemo:id/pidInputET")
+        el3.click()
         time.sleep(2)
+        el3.send_keys("688")
+        el4 = self.driver.find_element_by_id("com.ezxr.unitySDKDemo:id/btnCheckLocalEventExist")
+        el4.click()
+        name = self.driver.find_element_by_id("com.ezxr.unitySDKDemo:id/tvCheckLocalEventExist")
+        # self.assertEqual(name.text, '不存在该cid资源')
+        self.driver.hide_keyboard()
+        #删除该资源
+        el6 = self.driver.find_element_by_id("com.ezxr.unitySDKDemo:id/btnDeleteLocalEvent")
+        el6.click()
+        self.driver.back()
+        time.sleep(1)
+        self.driver.back()
+        time.sleep(2)
+        el7 = self.driver.find_element_by_id("com.ezxr.unitySDKDemo:id/arOasisLayout")
+        el7.click()
+        time.sleep(5)
+        el8 = self.driver.find_element_by_xpath(
+            "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/androidx.recyclerview.widget.RecyclerView[1]/android.widget.RelativeLayout[1]/android.widget.FrameLayout/android.widget.ImageView[2]")
+        el8.click()
+        time.sleep(5)
+        self.driver.get_screenshot_as_file('images/test_4.png')
 
 if __name__ == '__main__':
 
@@ -70,3 +107,4 @@ if __name__ == '__main__':
     # mytest = Test()
     # mytest.setUp()
     # mytest.test_2(locknum=2)
+    # mytest.test_4()
