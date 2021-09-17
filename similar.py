@@ -6,6 +6,7 @@ from pathlib import Path
 import cv2
 import numpy as np
 
+
 """
 输入路径，支持判断两张图片是否相同，需要保证图片格式一致
 """
@@ -48,28 +49,6 @@ def jpg_to_png(input_path):
             #rename
             shutil.move(f'{newdir}/{f_name}',f"{newdir}/{f_name.split('.')[0]}_{t}.{f_name.split('.')[1]}")
 
-def test():
-    data = ['test_4_expect.jpg']
-    temname = data[0]
-    temname2 = data[0].split('.')
-    # print(type(temname))
-    # print(temname)
-    # print(temname2)
-    # print(os.getcwd())
-    # newdir = Path(f'{os.getcwd()}/images/backups/')
-    # print(newdir)
-    print("{:*{}25}".format('测试开始','^'))
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.connect(('127.0.0.1', 4723))
-    s.shutdown(2)
-    print('%s:%d is ready' % ('127.0.0.1', 4723))
-
-    m = os.system('adb devices -l | grep "SM"')
-    if len(str(m)) == 2:
-        pass
-    else:
-        print('device not connected')
-
 if __name__ == '__main__':
     if similar('images/test_3.png','images/test_3的副本.png') ==True:
         print('图片相同')
@@ -78,5 +57,5 @@ if __name__ == '__main__':
 
     # jpg_to_png(input_path='images/')
 
-    # test()
+
 
