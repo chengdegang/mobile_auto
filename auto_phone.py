@@ -9,19 +9,26 @@ from appium.webdriver.common.mobileby import MobileBy
 from BeautifulReport import BeautifulReport as bf
 from main import send_file
 
-"""
-测试开始，判断appium端口已开启，待测设备已连接
-"""
-print("{:*{}25}".format('测试开始','^'))
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.connect(('127.0.0.1', 4723))
-s.shutdown(2)
-print('%s:%d is ready' % ('127.0.0.1', 4723))
-m = os.system('adb devices -l | grep "SM"')
-if len(str(m)) == 1:
-    print('device connected')
-else:
-    print('device not connected')
+# """
+# 测试开始，判断appium端口已开启，待测设备已连接
+# """
+# print("{:*{}25}".format('测试开始','^'))
+# s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+# s.connect(('127.0.0.1', 4723))
+# s.shutdown(2)
+# print('%s:%d is ready' % ('127.0.0.1', 4723))
+#
+# m = os.system('adb devices -l | grep "SM"')
+# if len(str(m)) == 1:
+#     print('device connected')
+# else:
+#     print('device not connected')
+
+def setUpModule():
+    print(" Module start .....")
+
+def tearDownModule():
+    print(" Module end ...")
 
 """
 测试前保证已开启apium server并确保手机已连接（三星s8）
@@ -150,21 +157,71 @@ class Test(unittest.TestCase):
         el1.click()
         pass
 
+"""以下为测试部分框架功能"""
+class Test2(unittest.TestCase):
+    # @unittest.skip('miss')
+    # @classmethod
+    # def setUpClass(self):
+    #     print('仅运行1次前')
+    def setUp(self):
+        print("case start...")
+
+    def tearDown(self):
+        print("case end...")
+
+    def test_1(self):
+        '''测试'''
+        result = 6 + 6
+        self.assertEqual(result, 12)
+        print('test_1')
+
+    a = 1
+    b = 2
+    @unittest.skipUnless(a==b,"条件成立时执行")
+    def test_2(self):
+        '''测试'''
+        result = 1 + 1
+        self.assertEqual(result, 2)
+        print('test_2')
+
+class Test3(unittest.TestCase):
+    # @unittest.skip('miss')
+    def test_3(self):
+        '''测试'''
+        result = 6 + 6
+        self.assertEqual(result, 12)
+        print('test_3')
+
+    @classmethod
+    def setUpClass(self):
+        print('class start ...')
+
+    @classmethod
+    def tearDownClass(self):
+        print('class end ...')
+
 if __name__ == '__main__':
+    """以下仅为测试用"""
+    suite = unittest.TestSuite()
+    suite.addTest(unittest.makeSuite(Test2))
+    suite.addTest(unittest.makeSuite(Test3))
+    # suite.addTest(Test2('test_1')) #单独只加测试类中的某个测试方法
+    runner = unittest.TextTestRunner()
+    runner.run(suite)
 
     # unittest.main() #单独运行
 
-    t = time.strftime("%Y年%m月%d日%H:%M:%S", time.localtime())
-    reportname = f'安卓sdk_{t}'
-    #生成报告模式运行
-    suite = unittest.TestSuite()  # 定义一个测试集合
-    suite.addTest(unittest.makeSuite(Test))  # 把写的用例加进来（将TestCalc类）加进来
-    run = bf(suite)  # 实例化BeautifulReport模块
-    run.report(filename=reportname, description='UnitySDK安卓自动化测试')
-    dirpath = os.getcwd()
-    send_file(file=f'{dirpath}/{reportname}.html', key='55001425-cf1d-4355-ba9e-c5d137bf6741') #qa群
+    """运行用例集并将结果以报告html的形式发送至指定企业微信群组内"""
+    # t = time.strftime("%Y年%m月%d日%H:%M:%S", time.localtime())
+    # reportname = f'安卓sdk_{t}'
+    # #生成报告模式运行
+    # suite = unittest.TestSuite()  # 定义一个测试集合
+    # suite.addTest(unittest.makeSuite(Test))  # 把写的用例加进来（将TestCalc类）加进来
+    # run = bf(suite)  # 实例化BeautifulReport模块
+    # run.report(filename=reportname, description='UnitySDK安卓自动化测试')
+    # dirpath = os.getcwd()
+    # # send_file(file=f'{dirpath}/{reportname}.html', key='55001425-cf1d-4355-ba9e-c5d137bf6741') #qa群
     # send_file(file=f'{dir}/{reportname}.html',key='f4b5ffa6-8412-47ed-9c7d-b0c6b22167e8') #吃饭群
-
 
     # mytest = Test()
     # mytest.setUp()

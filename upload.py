@@ -1,5 +1,4 @@
 import os
-
 import paramiko
 
 ip = "10.244.12.21"#服务器ip
