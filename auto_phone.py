@@ -164,10 +164,10 @@ class Test2(unittest.TestCase):
     # def setUpClass(self):
     #     print('仅运行1次前')
     def setUp(self):
-        print("case start...")
+        print("setUp start...")
 
     def tearDown(self):
-        print("case end...")
+        print("tearDown end...")
 
     def test_1(self):
         '''测试'''
@@ -194,11 +194,17 @@ class Test3(unittest.TestCase):
 
     @classmethod
     def setUpClass(self):
-        print('class start ...')
+        print('setUpClass start ...')
 
     @classmethod
     def tearDownClass(self):
-        print('class end ...')
+        print('tearDownClass end ...')
+
+    def setUp(self):
+        print("setUp start...")
+
+    def tearDown(self):
+        print("tearDown end...")
 
 if __name__ == '__main__':
     """以下仅为测试用"""
